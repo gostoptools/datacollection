@@ -6,7 +6,7 @@
 	"scripts": {
 		"devStart": "nodemon index.ts",
 		"start": "ts-node index.ts",
-		"build": "cd client && yarn build"
+		"build": "cd client && yarn && yarn build"
 	},
 	"engines": {
 		"node": "16.x"
