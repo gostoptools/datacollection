@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet"
 import axios from "axios"
 import { useState, useEffect } from "react"
 import React from "react"
+import { Link } from "gatsby"
 
 const instance = axios.create({
   withCredentials: true,
@@ -30,15 +31,15 @@ const Page = (props: { children: React.ReactNode }) => {
         <title>Hwatu</title>
         <link rel="icon" href="/favicon.ico" />
       </Helmet>
-      <h1 className="m-2 p-3 text-center text-xl">
+      <h1 className="m-2 p-3 text-center text-2xl">
         A Hwatu Data Collection Management System.
       </h1>
       {failed ? (
-        <div className="m-2 p-3 text-center text-xl">
+        <div className="m-2 p-3 text-center text-2xl">
           Failed to connect to backend. {JSON.stringify(failed)}
         </div>
       ) : (
-        <div className="text-center justify-between m-2 p-3 text-gray-500">
+        <div className="text-center justify-between p-0 text-gray-500 text-xl">
           {user ? (
             <>
               Logged in as {user.email}{" "}
@@ -63,8 +64,14 @@ const Page = (props: { children: React.ReactNode }) => {
         </div>
       )}
       <footer className="m-2 text-gray-600 text-sm text-center">
-        Created by Juni Kim with Gatsby, TailwindCSS, Express, Mongoose, and
-        PassportJS.
+        Contribute on{" "}
+        <Link
+          to="https://github.com/gostoptools/datacollection"
+          className="underline"
+        >
+          {" "}
+          Github
+        </Link>
       </footer>
     </div>
   )

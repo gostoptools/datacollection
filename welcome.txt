@@ -1,0 +1,12 @@
+Welcome to the Hwatu Data Collection API!
+
+API endpoints:
+
+GET /api/all - returns a JSON of all results from the db. (Admin only)
+POST /api/search/result - get 25 results based on a JSON query.
+POST /api/add - add results with a JSON query.
+
+Authentication endpoints:
+
+/login - oauth with google
+/logout - log out 

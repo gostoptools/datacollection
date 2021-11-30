@@ -45,11 +45,11 @@ app.use(passport.session());
 app.use(validationMiddleWare);
 
 app.use('/api', authRouter);
-app.use('/api/', dbRouter);
+app.use('/api', dbRouter);
 app.use('/', express.static(path.join(__dirname, '/client/public')));
 
-app.get('/', (req, res) =>
-	res.send('Welcome to the hwatu data collection API!')
+app.get('/api', (req, res) =>
+	res.sendFile(path.resolve(__dirname, 'welcome.txt'))
 );
 
 const server = app.listen(port, () => {

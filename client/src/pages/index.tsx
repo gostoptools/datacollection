@@ -6,7 +6,6 @@ const Home = () => {
   return (
     <Page>
       <Navigation />
-      <div>Powered by API {process.env.NEXT_PUBLIC_BACKEND!}</div>
     </Page>
   )
 }
