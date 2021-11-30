@@ -13,7 +13,7 @@ passport.use(
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
 			callbackURL:
 				process.env.NODE_ENV === 'production'
-					? 'https://shrouded-tundra-19980.herokuapp.com/api/auth/google/callback'
+					? 'https://hwatu-datacollection.herokuapp.com/api/auth/google/callback'
 					: 'http://lvh.me:3000/api/auth/google/callback',
 		},
 
