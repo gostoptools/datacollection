@@ -28,14 +28,14 @@ app.use(
 	session({
 		secret: 'something',
 		resave: false,
-		saveUninitialized: true,
+		saveUninitialized: false,
 		cookie: {
-			sameSite: 'none',
-			secure: true,
+			secure: process.env.NODE_ENV === 'production',
 		},
 		store: MongoStore.create({ mongoUrl: uri, ttl: 24 * 60 * 60 }),
 	})
 );
+if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
 app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
