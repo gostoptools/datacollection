@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet"
 import axios from "axios"
 import { useState, useEffect } from "react"
 import React from "react"
-import { Link } from "gatsby"
 
 const instance = axios.create({
   withCredentials: true,
@@ -14,9 +13,9 @@ const Page = (props: { children: React.ReactNode }) => {
 
   useEffect(() => {
     instance.get("/api/user").then(
-      res => {
+      async res => {
         if (res.data.email) {
-          setUser(res.data)
+          await setUser(res.data)
         }
       },
       e => {
@@ -65,13 +64,13 @@ const Page = (props: { children: React.ReactNode }) => {
       )}
       <footer className="m-2 text-gray-600 text-sm text-center">
         Contribute on{" "}
-        <Link
-          to="https://github.com/gostoptools/datacollection"
+        <a
+          href="https://github.com/gostoptools/datacollection"
           className="underline"
         >
           {" "}
           Github
-        </Link>
+        </a>
       </footer>
     </div>
   )

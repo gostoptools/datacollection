@@ -14,8 +14,8 @@ export interface User {
 
 const userSchema = new mongoose.Schema<User>({
 	email: { type: String, required: true },
-	displayName: { type: String, required: true },
-	id: { type: String, required: true },
+	displayName: { type: String },
+	id: { type: String },
 	points: { type: Number, default: 0 },
 });
 

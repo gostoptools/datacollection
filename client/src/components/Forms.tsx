@@ -1,8 +1,10 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
+import { instance } from "./Filter"
 
 export function BooleanForm(props: {
   callback: any
   name: string
+  id?: number
   default?: any
   allowundefined?: boolean
 }) {
@@ -14,7 +16,7 @@ export function BooleanForm(props: {
         True{" "}
         <input
           type="radio"
-          name={props.name}
+          name={props.name + (props.id ? props.id : "")}
           value="true"
           onChange={e => {
             if (e.target.value == "true") props.callback(true)
@@ -26,7 +28,7 @@ export function BooleanForm(props: {
         False{" "}
         <input
           type="radio"
-          name={props.name}
+          name={props.name + (props.id ? props.id : "")}
           value="false"
           onChange={e => {
             if (e.target.value == "false") props.callback(false)
@@ -39,7 +41,7 @@ export function BooleanForm(props: {
           Nothing{" "}
           <input
             type="radio"
-            name={props.name}
+            name={props.name + (props.id ? props.id : "")}
             value="undefined"
             onChange={e => {
               if (e.target.value == "undefined") props.callback(props.default)
@@ -97,18 +99,33 @@ export function TextForm(props: {
   callback: any
   name: string
   default?: any
+  id?: number
 }) {
+  const [users, setUsers] = useState<string[]>([])
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const res = await instance.get("/api/user/all")
+        await setUsers(res.data)
+      } catch (e: any) {}
+    })()
+  }, [])
   return (
     <div className="m-1 p-1 rounded-lg bg-gray-200">
       <label>
         <span className="mx-1 bg-blue-200">{props.name}</span>
-        <input
-          type="text"
-          name={props.name}
+        <select
+          name={props.name + (props.id ? props.id : "")}
           onChange={e => {
-            props.callback(e.target.value || props.default)
+            props.callback(e.target.value)
           }}
-        />{" "}
+        >
+          {[""].concat(users).map((user: string, key: number) => (
+            <option value={user} key={key}>
+              {user}
+            </option>
+          ))}
+        </select>
       </label>
     </div>
   )

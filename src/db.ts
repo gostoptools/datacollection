@@ -36,6 +36,50 @@ router.get('/all/', adminOnly, function (req, res) {
 	Result.find({}).exec((err, data) => res.json(data));
 });
 
+router.get('/user/delete', adminOnly, (req, res) => {
+	const email = req.query.email;
+	if (!email) {
+		res.status(400).json({ failure: "invalid 'email' get parameter." });
+		return;
+	}
+	User.findOneAndDelete({ email: email as string }, (err: any, data: any) => {
+		if (err) res.status(500).json({ failure: err });
+		else {
+			if (data) {
+				res.status(200).json({ message: `Deleted user ${email as string}` });
+			} else {
+				res
+					.status(404)
+					.json({ message: `Nonexistent user ${email as string}` });
+			}
+		}
+	});
+});
+
+router.get('/user/allow', adminOnly, async (req, res) => {
+	const email = req.query.email;
+	console.log(email);
+	if (!email)
+		res.status(400).json({ failure: "invalid 'email' get parameter." });
+	User.findOne({ email: email as string }, (err: any, data: any) => {
+		if (!data) {
+			const user = new User({ email: email });
+			user
+				.save()
+				.then((_) =>
+					res.status(200).json({ message: `Added user ${email as string}` })
+				)
+				.catch((e) => res.status(500).json({ failure: e }));
+		} else {
+			res.status(200).json({ message: 'User account already exists.' });
+		}
+	});
+});
+
+router.get('/user/all', (req, res) => {
+	User.find({}).exec((err, data) => res.json(data.map((x) => x.email)));
+});
+
 // supply previous as a query parameter.
 router.post(
 	'/search/result',

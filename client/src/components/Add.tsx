@@ -45,6 +45,7 @@ const defaultQuery = (length: number) =>
 
 interface UserFormProps {
   onChange: any
+  id: number
 }
 class UserForm extends Component<UserFormProps> {
   state = defaultResult()
@@ -62,7 +63,8 @@ class UserForm extends Component<UserFormProps> {
             this.onChange(this.state)
           }}
           default=""
-          name="User"
+          name="User Email"
+          id={this.props.id}
         />
         <NumberForm
           callback={async (x: any) => {
@@ -70,7 +72,7 @@ class UserForm extends Component<UserFormProps> {
             this.onChange(this.state)
           }}
           default={0}
-          name="Won"
+          name="Amount Won/Lost"
         />
         <NumberForm
           callback={async (x: any) => {
@@ -95,7 +97,8 @@ class UserForm extends Component<UserFormProps> {
           }}
           allowundefined={false}
           default={0}
-          name="Pi bak"
+          name="Pi Bak"
+          id={this.props.id}
         />
         <BooleanForm
           callback={async (x: any) => {
@@ -105,6 +108,7 @@ class UserForm extends Component<UserFormProps> {
           allowundefined={false}
           default={false}
           name="Gwang Bak"
+          id={this.props.id}
         />
         <BooleanForm
           callback={async (x: any) => {
@@ -114,6 +118,7 @@ class UserForm extends Component<UserFormProps> {
           allowundefined={false}
           default={false}
           name="Tap"
+          id={this.props.id}
         />
         <BooleanForm
           callback={async (x: any) => {
@@ -123,6 +128,7 @@ class UserForm extends Component<UserFormProps> {
           name="Went First"
           allowundefined={false}
           default={false}
+          id={this.props.id}
         />
         <NumberForm
           callback={async (x: any) => {
@@ -153,7 +159,6 @@ export default function Add(props: { pageContext: { users: number } }) {
     instance
       .post("/api/add", query.current)
       .then(res => {
-        console.log("happens")
         if (res.status === 200) {
           setSubmitted(true)
         } else {
@@ -164,6 +169,7 @@ export default function Add(props: { pageContext: { users: number } }) {
         setError(e.response.data.failure)
       })
   }
+
   return (
     <Page>
       <Navigation />
@@ -175,14 +181,17 @@ export default function Add(props: { pageContext: { users: number } }) {
         />
         {Array(props.pageContext.users)
           .fill(null)
-          .map((_, index) => (
-            <UserForm
-              key={index}
-              onChange={(state: any) => {
-                query.current.result[index] = state
-              }}
-            />
-          ))}
+          .map((_, index) => {
+            return (
+              <UserForm
+                id={index}
+                key={index}
+                onChange={(state: any) => {
+                  query.current.result[index] = state
+                }}
+              />
+            )
+          })}
         <button
           className={"m-2 p-3 " + (submitted ? "bg-blue-400" : "bg-blue-300")}
           onClick={!submitted ? submit : undefined}

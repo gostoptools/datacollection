@@ -8,24 +8,24 @@ const AddPage = () => {
     <Page>
       <Navigation />
       <h1 className="text-xl text-black"> Select Game Mode </h1>
-      <Link to="/add/2">
-        <a className="hover:text-blue-300">Mat-Go</a>
+      <Link to="/add/2" className="hover:text-blue-300">
+        Mat-Go
       </Link>
       <br />
-      <Link to="/add/3">
-        <a className="hover:text-blue-300">Go-Stop</a>
+      <Link to="/add/3" className="hover:text-blue-300">
+        Go-Stop (3)
       </Link>
       <br />
-      <Link to="/add/4">
-        <a className="hover:text-blue-300">Go-Stop (4)</a>
+      <Link to="/add/4" className="hover:text-blue-300">
+        Go-Stop with Gwang-selling (4)
       </Link>
       <br />
-      <Link to="/add/5">
-        <a className="hover:text-blue-300">Go-Stop (5)</a>
+      <Link to="/add/5" className="hover:text-blue-300">
+        Go-Stop with Gwang-selling (4)
       </Link>
       <br />
-      <Link to="/add/6">
-        <a className="hover:text-blue-300">Go-Stop (6)</a>
+      <Link to="/add/6" className="hover:text-blue-300">
+        Go-Stop with Gwang-selling (4)
       </Link>
       <br />
     </Page>

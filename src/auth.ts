@@ -17,25 +17,35 @@ passport.use(
 					: 'http://lvh.me:3000/api/auth/google/callback',
 		},
 
-		function (accessToken, refreshToken, profile, cb) {
-			User.findOne({ id: profile.id }, function (err: any, user: typeof User) {
+		async function (accessToken, refreshToken, profile, cb) {
+			User.findOne({ id: profile.id }, async function (err: any, user: any) {
 				// error out if no emails given.
 				if (err || !profile.emails || !profile.emails[0]) {
 					return cb(err);
 				}
-
+				const newuser = new User({
+					displayName: profile.displayName,
+					email: profile.emails[0]!.value,
+					id: profile.id,
+				});
 				if (!user) {
-					const newuser = new User({
-						displayName: profile.displayName,
-						email: profile.emails[0]!.value,
-						id: profile.id,
-					});
-					newuser.save(function (err) {
-						if (err) console.log('newuser: ', err);
-						return cb(err, newuser);
-					});
+					// not authorized.
+					if (profile!.emails[0].value === process.env.HWATU_ADMIN) {
+						newuser.save(function (err) {
+							if (err) console.log('newuser: ', err);
+							return cb(err, newuser);
+						});
+					}
+					return cb(err);
 				} else {
-					cb(err, user);
+					if (!user.displayName || !user.id) {
+						await User.findOneAndUpdate(
+							{ id: profile.id },
+							{ displayName: profile.displayName, id: profile.id }
+						);
+						return cb(err, newuser);
+					}
+					return cb(err, user);
 				}
 			});
 		}
