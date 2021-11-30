@@ -1,0 +1,3 @@
+- Add TailWindcss
+- Dynamically generate Page numbers
+- Get rid of nextjs links
