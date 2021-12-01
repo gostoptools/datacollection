@@ -117,7 +117,7 @@ class UserForm extends Component<UserFormProps> {
           }}
           allowundefined={false}
           default={false}
-          name="Tap"
+          name="Tapped Deck"
           id={this.props.id}
         />
         <BooleanForm
@@ -135,7 +135,7 @@ class UserForm extends Component<UserFormProps> {
             await this.setState({ ppeok: x })
             this.onChange(this.state)
           }}
-          name="Ppeok"
+          name="Created Ppeok"
           default={0}
         />
         <NumberForm
@@ -143,7 +143,7 @@ class UserForm extends Component<UserFormProps> {
             await this.setState({ eat_ppeok: x })
             this.onChange(this.state)
           }}
-          name="Ate Ppeok?"
+          name="Ate Ppeok"
           default={0}
         />
       </div>
