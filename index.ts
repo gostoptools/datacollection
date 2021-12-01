@@ -42,11 +42,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(validationMiddleWare);
+app.use(bodyParser.json());
 
 app.use('/api', authRouter);
 app.use('/api', dbRouter);
 app.use('/', express.static(path.join(__dirname, '/client/public')));
+
+app.use(validationMiddleWare);
 
 app.get('/api', (req, res) =>
 	res.sendFile(path.resolve(__dirname, 'welcome.txt'))

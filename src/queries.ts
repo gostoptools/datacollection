@@ -13,14 +13,15 @@ export const validationMiddleWare: express.ErrorRequestHandler = (
 	let responseData;
 	if (err.name === 'JsonSchemaValidation') {
 		// Log the error however you please
-		console.log(err.message);
 		res.status(400);
 		responseData = {
 			statusText: 'Bad Request',
 			jsonSchemaValidation: true,
 			validations: err.validations,
 		};
-		res.json(responseData);
+		if (req.xhr || req.get('Content-Type') === 'application/json') {
+			res.json(responseData);
+		}
 	} else {
 		next(err);
 	}
@@ -65,9 +66,18 @@ export const resultQuerySchema = {
 	properties: {
 		won: { type: 'boolean' },
 		previous: {
-			type: 'string',
-			minLength: 24,
-			maxLength: 24,
+			type: 'object',
+			properties: {
+				id: {
+					type: 'string',
+					minLength: 24,
+					maxLength: 24,
+				},
+				createdAt: {
+					type: 'string',
+					format: 'date-time',
+				},
+			},
 		},
 
 		// almost never happen more than once
@@ -91,7 +101,6 @@ export const resultQuerySchema = {
 
 export const parseResultQuery = (body: any) => {
 	const query: any = {};
-	if (body.previous) query._id = { $gt: new ObjectId(body.previous) };
 	if (body.won !== undefined) query.won = body.won ? { $gt: 0 } : { $lt: 0 };
 	if (body.tap !== undefined) query.tap = body.tap;
 	if (body.first !== undefined) query.first = body.first;

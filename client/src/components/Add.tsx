@@ -62,7 +62,7 @@ class UserForm extends Component<UserFormProps> {
             await this.setState({ user: x })
             this.onChange(this.state)
           }}
-          default=""
+          default={[]}
           name="User Email"
           id={this.props.id}
         />

@@ -5,7 +5,7 @@ import React from "react"
 
 interface PlayerResult {
   won?: boolean
-  previous?: string
+  previous?: { id: string; createdAt: Date }
   shake?: boolean
   poktan?: boolean
   ppeok?: number
@@ -97,15 +97,19 @@ export default class Filter extends Component {
 
   takeQuery = async (query: SearchType) => {
     this.setState({ loading: true })
-    console.log("called")
-    console.log(query)
     instance
       .post("/api/search/result", query)
       .then(d => {
         if (d.status !== 200) {
           this.setState({ errors: JSON.stringify(d.data) })
         } else {
-          const previous = d.data[d.data.length - 1]._id
+          const previous =
+            d.data.length !== 0
+              ? {
+                  id: d.data[d.data.length - 1]?._id,
+                  createdAt: d.data[d.data.length - 1]?.createdAt,
+                }
+              : undefined
           if (query.previous === undefined) {
             this.setState({ data: d.data, previous })
           } else {

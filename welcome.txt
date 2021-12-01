@@ -5,6 +5,7 @@ API endpoints:
 
 POST /api/search/result - get 25 results based on a JSON query.
 POST /api/add - add results with a JSON query.
+GET /api/user/all - get all users in the db.
 
 ====================
 
@@ -12,7 +13,6 @@ Authentication endpoints:
 
 /auth/google or /login - oauth with google
 /logout - log out 
-
 
 =====================
 Admin endpoints:

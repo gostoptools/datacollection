@@ -1,0 +1,45 @@
+
+POST http://lvh.me:3000/api/add
+Content-Type: application/json
+
+{
+	"result": [
+        {
+          "user": "junikimm717@gmail.com",
+          "won": 10,
+          "shake": 1,
+          "poktan": 0,
+          "ppeok": 1,
+          "eat_ppeok": 1,
+          "gwang_bak": false,
+          "pi_bak": false,
+          "tap": true,
+          "first": true,
+          "tap": false
+		}
+    ],
+    "tags": ["4"]
+}
+
+###
+POST http://lvh.me:3000/api/add
+Content-Type: application/json
+
+{
+	"result": [
+        {
+          "user": "junikimm717@gmail.com",
+          "won": 10,
+          "shake": 1,
+          "poktan": "invalid type",
+          "ppeok": 1,
+          "eat_ppeok": 1,
+          "gwang_bak": false,
+          "pi_bak": false,
+          "tap": true,
+          "first": true,
+          "tap": false
+		}
+    ],
+    "tags": "a string"
+}

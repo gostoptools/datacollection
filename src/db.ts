@@ -9,7 +9,12 @@ import Game from './models/game';
 import Result from './models/result';
 import User from './models/user';
 import { adminOnly, loggedIn } from './perms';
-import { addSchema, parseResultQuery, resultQuerySchema } from './queries';
+import {
+	addSchema,
+	parseResultQuery,
+	resultQuerySchema,
+	validationMiddleWare,
+} from './queries';
 
 /*
  * mongodb credentials
@@ -18,7 +23,10 @@ import { addSchema, parseResultQuery, resultQuerySchema } from './queries';
 
 const password = process.env.DB_PASSWORD;
 
-export const uri = `mongodb+srv://junikim:${password}@hwatudatacollection1.umf8y.mongodb.net/hwatugame?retryWrites=true&w=majority`;
+export const uri =
+	process.env.NODE_ENV === 'production'
+		? `mongodb+srv://junikim:${password}@hwatudatacollection1.umf8y.mongodb.net/hwatugame?retryWrites=true&w=majority`
+		: `mongodb+srv://junikim:${password}@hwatudatacollectiondev.umf8y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 mongoose
 	.connect(uri)
@@ -87,16 +95,21 @@ router.post(
 	validate({ body: resultQuerySchema }),
 	async function (req, res) {
 		const query: any = parseResultQuery(req.body);
+		let condition: any = {};
 		if (req.body.previous) {
-			const id = new ObjectId(req.body.previous);
-			query._id = { $gt: id };
+			const id = new ObjectId(req.body.previous.id);
 			if ((await Result.findById(id)) === null) {
 				res.status(404).json({ message: `id ${id} is not in the db.` });
 				return;
 			}
+			condition = [
+				{ _id: { $gt: id }, createdAt: req.body.previous.createdAt },
+				{ createdAt: { $lt: req.body.previous.createdAt } },
+			];
 		}
 		Result.find(query)
-			.sort({ createdAt: -1 })
+			.or(condition)
+			.sort({ createdAt: -1, _id: 1 })
 			.limit(25)
 			.exec(async (err, data) => {
 				res.send(data);
@@ -112,14 +125,12 @@ router.post(
 		const game = new Game();
 		const tags = req.body.tags;
 		game.tags = tags;
-
-		let statuscode = undefined;
+		let results;
 		try {
-			const results = await Promise.all(
+			results = await Promise.all(
 				req.body.result.map(async (g: any) => {
 					const user = await User.findOne({ email: g.user }).exec();
 					if (!user) {
-						statuscode = 404;
 						throw `No user with email ${g.user} found.`;
 					}
 					let r = new Result({
@@ -139,11 +150,15 @@ router.post(
 					return r;
 				})
 			);
+		} catch (e) {
+			return res.status(404).json({ failure: e });
+		}
+		try {
 			await Promise.all(results.map((r: any) => r.save()));
 			await game.save();
 		} catch (e) {
-			res.status(statuscode || 500).json({ failure: e });
-			return;
+			console.log('happens wtf?');
+			return res.status(500).json({ failure: e });
 		}
 		res.status(200).json({ message: 'Successful!' });
 	}
