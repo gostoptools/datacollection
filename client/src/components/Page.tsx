@@ -41,7 +41,7 @@ const Page = (props: { children: React.ReactNode }) => {
         <div className="text-center justify-between p-0 text-gray-500 text-xl">
           {user ? (
             <>
-              Logged in as {user.email}{" "}
+              Logged in as {user.displayName || user.email}{" "}
               <a
                 href={"/api/logout"}
                 className="hover:text-blue-500 bg-blue-200 p-2 rounded-sm"

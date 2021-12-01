@@ -18,29 +18,32 @@ passport.use(
 		},
 
 		async function (accessToken, refreshToken, profile, cb) {
-			User.findOne({ id: profile.id }, async function (err: any, user: any) {
+			const profileemails = profile.emails;
+			const email = profileemails ? profileemails[0].value : '';
+			User.findOne({ email }, async function (err: any, user: any) {
 				// error out if no emails given.
-				if (err || !profile.emails || !profile.emails[0]) {
+				if (err || email === '') {
 					return cb(err);
 				}
 				const newuser = new User({
 					displayName: profile.displayName,
-					email: profile.emails[0]!.value,
+					email,
 					id: profile.id,
 				});
 				if (!user) {
 					// not authorized.
-					if (profile!.emails[0].value === process.env.HWATU_ADMIN) {
+					if (email === process.env.HWATU_ADMIN) {
 						newuser.save(function (err) {
 							if (err) console.log('newuser: ', err);
 							return cb(err, newuser);
 						});
+					} else {
+						return cb(err);
 					}
-					return cb(err);
 				} else {
 					if (!user.displayName || !user.id) {
 						await User.findOneAndUpdate(
-							{ id: profile.id },
+							{ email },
 							{ displayName: profile.displayName, id: profile.id }
 						);
 						return cb(err, newuser);
