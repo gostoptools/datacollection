@@ -99,57 +99,54 @@ router.post(
 			.sort({ createdAt: -1 })
 			.limit(25)
 			.exec(async (err, data) => {
-				const d = await Promise.all(
-					data.map(async (x: any) => {
-						const user = await User.findById(x.user);
-						const res = { ...x._doc };
-						res.user = user?.email;
-						return res;
-					})
-				);
-				res.send(d);
+				res.send(data);
 			});
 	}
 );
 
-router.post('/add/', validate({ body: addSchema }), async function (req, res) {
-	const game = new Game();
-	const tags = req.body.tags;
-	game.tags = tags;
+router.post(
+	'/add/',
+	loggedIn,
+	validate({ body: addSchema }),
+	async function (req, res) {
+		const game = new Game();
+		const tags = req.body.tags;
+		game.tags = tags;
 
-	let statuscode = undefined;
-	try {
-		const results = await Promise.all(
-			req.body.result.map(async (g: any) => {
-				const user = await User.findOne({ email: g.user }).exec();
-				if (!user) {
-					statuscode = 404;
-					throw `No user with email ${g.user} found.`;
-				}
-				let r = new Result({
-					ppeok: g.ppeok,
-					eat_ppeok: g.eat_ppeok,
-					shake: g.shake,
-					poktan: g.poktan,
-					gwang_bak: g.gwang_bak,
-					pi_bak: g.pi_bak,
-					tap: g.tap,
-					first: g.first,
-					game: game._id,
-					won: g.won,
-					tags,
-					user,
-				});
-				return r;
-			})
-		);
-		await Promise.all(results.map((r: any) => r.save()));
-		await game.save();
-	} catch (e) {
-		res.status(statuscode || 500).json({ failure: e });
-		return;
+		let statuscode = undefined;
+		try {
+			const results = await Promise.all(
+				req.body.result.map(async (g: any) => {
+					const user = await User.findOne({ email: g.user }).exec();
+					if (!user) {
+						statuscode = 404;
+						throw `No user with email ${g.user} found.`;
+					}
+					let r = new Result({
+						ppeok: g.ppeok,
+						eat_ppeok: g.eat_ppeok,
+						shake: g.shake,
+						poktan: g.poktan,
+						gwang_bak: g.gwang_bak,
+						pi_bak: g.pi_bak,
+						tap: g.tap,
+						first: g.first,
+						game: game._id,
+						won: g.won,
+						tags,
+						user: g.user,
+					});
+					return r;
+				})
+			);
+			await Promise.all(results.map((r: any) => r.save()));
+			await game.save();
+		} catch (e) {
+			res.status(statuscode || 500).json({ failure: e });
+			return;
+		}
+		res.status(200).json({ message: 'Successful!' });
 	}
-	res.status(200).json({ message: 'Successful!' });
-});
+);
 
 export default router;
