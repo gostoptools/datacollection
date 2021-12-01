@@ -16,18 +16,6 @@ const AddPage = () => {
         Go-Stop (3)
       </Link>
       <br />
-      <Link to="/add/4" className="hover:text-blue-300">
-        Go-Stop with Gwang-selling (4)
-      </Link>
-      <br />
-      <Link to="/add/5" className="hover:text-blue-300">
-        Go-Stop with Gwang-selling (4)
-      </Link>
-      <br />
-      <Link to="/add/6" className="hover:text-blue-300">
-        Go-Stop with Gwang-selling (4)
-      </Link>
-      <br />
     </Page>
   )
 }
