@@ -171,7 +171,7 @@ export default function Add(props: { pageContext: { users: number } }) {
   }
 
   return (
-    <Page>
+    <Page auth={true}>
       <Navigation />
       <div className="m-2 p-3 rounded-lg bg-gray-50">
         <h1> With {props.pageContext.users} Users </h1>

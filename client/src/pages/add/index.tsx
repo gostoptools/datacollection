@@ -5,7 +5,7 @@ import Navigation from "../../components/Navigation"
 
 const AddPage = () => {
   return (
-    <Page>
+    <Page auth={true}>
       <Navigation />
       <h1 className="text-xl text-black"> Select Game Mode </h1>
       <Link to="/add/2" className="hover:text-blue-300">

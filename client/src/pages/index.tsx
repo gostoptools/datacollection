@@ -4,9 +4,10 @@ import Navigation from "../components/Navigation"
 
 const Home = () => {
   return (
-    <Page>
+    <>
+      <Page auth={true}></Page>
       <Navigation />
-    </Page>
+    </>
   )
 }
 export default Home

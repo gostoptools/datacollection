@@ -7,7 +7,7 @@ const instance = axios.create({
   withCredentials: true,
 })
 
-const Page = (props: { children: React.ReactNode }) => {
+const Page = (props: { children?: React.ReactNode; auth: boolean }) => {
   const [user, setUser] = useState<any>(undefined)
   const [failed, setFailed] = useState<any>(undefined)
 
@@ -39,26 +39,32 @@ const Page = (props: { children: React.ReactNode }) => {
         </div>
       ) : (
         <div className="text-center justify-between p-0 text-gray-500 text-xl">
-          {user ? (
+          {props.auth ? (
             <>
-              Logged in as {user.displayName || user.email}{" "}
-              <a
-                href={"/api/logout"}
-                className="hover:text-blue-500 bg-blue-200 p-2 rounded-sm"
-              >
-                Log Out
-              </a>
-              {props.children}
+              {user ? (
+                <>
+                  Logged in as {user.displayName || user.email}{" "}
+                  <a
+                    href={"/api/logout"}
+                    className="hover:text-blue-500 bg-blue-200 p-2 rounded-sm"
+                  >
+                    Log Out
+                  </a>
+                  {props.children}
+                </>
+              ) : (
+                <>
+                  <a
+                    href={"/api/login"}
+                    className="hover:text-blue-500 bg-blue-200 p-2 rounded-sm"
+                  >
+                    Log In
+                  </a>
+                </>
+              )}
             </>
           ) : (
-            <>
-              <a
-                href={"/api/login"}
-                className="hover:text-blue-500 bg-blue-200 p-2 rounded-sm"
-              >
-                Log In
-              </a>
-            </>
+            props.children
           )}
         </div>
       )}

@@ -91,7 +91,6 @@ router.get('/user/all', (req, res) => {
 // supply previous as a query parameter.
 router.post(
 	'/search/result',
-	loggedIn,
 	validate({ body: resultQuerySchema }),
 	async function (req, res) {
 		const query: any = parseResultQuery(req.body);
