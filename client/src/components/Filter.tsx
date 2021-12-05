@@ -133,6 +133,13 @@ export default class Filter extends Component {
           <BooleanForm
             callback={(x: any) => {
               this.rmprevious()
+              this.setState({ won: x })
+            }}
+            name="Won the Game?"
+          />
+          <BooleanForm
+            callback={(x: any) => {
+              this.rmprevious()
               this.setState({ poktan: x })
             }}
             name="Poktan"
@@ -177,7 +184,7 @@ export default class Filter extends Component {
               this.rmprevious()
               this.setState({ ppeok: x })
             }}
-            name="Ppeok"
+            name="Created Ppeok"
           />
           <NumberForm
             callback={(x: any) => {
