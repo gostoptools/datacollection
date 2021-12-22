@@ -54,6 +54,10 @@ app.get('/api', (req, res) =>
 	res.sendFile(path.resolve(__dirname, 'welcome.txt'))
 );
 
+app.get('/googled4373194eff6bdf8.html', (req, res) => {
+	res.sendFile(path.resolve(__dirname, 'googled4373194eff6bdf8.html'));
+});
+
 const server = app.listen(port, () => {
 	console.log('listening at port', port);
 });
