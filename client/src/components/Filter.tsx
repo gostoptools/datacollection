@@ -70,6 +70,12 @@ function ShowData(props: { data: any }) {
         <div>
           won: {props.data.won}
           <br />
+          {props.data.pi !== undefined && (
+            <>
+              pi: {props.data.pi}
+              <br />
+            </>
+          )}
           pi bak: {props.data.pi_bak ? "Yes" : "No"}
           <br />
           gwang bak: {props.data.gwang_bak ? "Yes" : "No"}

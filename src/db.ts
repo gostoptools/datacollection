@@ -143,6 +143,7 @@ router.post(
 						first: g.first,
 						game: game._id,
 						won: g.won,
+						pi: g.pi,
 						tags,
 						user: g.user,
 					});

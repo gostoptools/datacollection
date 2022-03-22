@@ -15,6 +15,7 @@ interface PlayerResult {
   first: boolean
   tap: boolean
   user: string
+  pi: number
 }
 
 const defaultResult = () =>
@@ -29,6 +30,7 @@ const defaultResult = () =>
     first: false,
     tap: false,
     user: "",
+    pi: 0,
   } as PlayerResult)
 
 interface AddQuery {
@@ -145,6 +147,14 @@ class UserForm extends Component<UserFormProps> {
           }}
           name="Ate Ppeok"
           default={0}
+        />
+        <NumberForm
+          callback={async (x: any) => {
+            await this.setState({ pi: x })
+            this.onChange(this.state)
+          }}
+          default={0}
+          name="Number of Pi"
         />
       </div>
     )

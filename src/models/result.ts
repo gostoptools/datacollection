@@ -21,6 +21,7 @@ export interface Result {
 	user: string;
 	game: typeof ObjectId;
 	won: number;
+	pi: number;
 }
 
 const resultSchema = new mongoose.Schema<Result>(
@@ -37,6 +38,7 @@ const resultSchema = new mongoose.Schema<Result>(
 		poktan: { type: Number, default: 0 },
 		shake: { type: Number, default: 0 },
 		user: { type: String, required: true },
+		pi: { type: Number },
 		game: { type: ObjectId, required: true },
 		won: { type: Number, required: true },
 		tags: { type: [String] },
